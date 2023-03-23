@@ -27,7 +27,7 @@ provider "openstack" {
 }
 
 module "site-ttdi" {
-  source = "./test1"
+  source = "./test"
   for_each = {
     for o in var.key_pair_compute : o.key_name => o if contains(o.location, "openstack-my-ttdi")
   }
@@ -40,7 +40,7 @@ module "site-ttdi" {
 }
 
 module "site-kl" {
-  source = "./test1"
+  source = "./test"
   for_each = {
     for o in var.key_pair_compute : o.key_name => o if contains(o.location, "openstack-my-kl")
   }
