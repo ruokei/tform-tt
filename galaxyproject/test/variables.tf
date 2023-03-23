@@ -1,20 +1,10 @@
 variable "key_pair_compute" {
   description = "Key Pair and Instance List"
-  type = list(object({
+  type = object({
     instance_name = string
     key_name      = string
     public_key    = string
     location      = list(string)
-  }))
-}
-
-variable "flavor_setup" {
-  description = "Flavor Settings"
-  type = object({
-    name  = string
-    ram   = string
-    vcpus = string
-    disk  = string
   })
 }
 

@@ -27,7 +27,7 @@ provider "openstack" {
 }
 
 module "site-ttdi" {
-  source = "./test1"
+  source = "./test"
   for_each = {
     for o in var.key_pair_compute : o.key_name => o if contains(o.location, "openstack-my-ttdi")
   }
@@ -37,10 +37,11 @@ module "site-ttdi" {
   }
 
   key_pair_compute = each.value
+  secgroup = var.secgroup
 }
 
 module "site-kl" {
-  source = "./test1"
+  source = "./test"
   for_each = {
     for o in var.key_pair_compute : o.key_name => o if contains(o.location, "openstack-my-kl")
   }
@@ -50,6 +51,7 @@ module "site-kl" {
   }
 
   key_pair_compute = each.value
+  secgroup = var.secgroup
 }
 
 # key_pair        = openstack_compute_keypair_v2.my-cloud-key[].name

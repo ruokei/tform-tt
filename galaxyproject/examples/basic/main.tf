@@ -9,10 +9,60 @@ module "test" {
     #   location      = ["openstack-my-kl", "openstack-my-ttdi"]
     # },
     {
-      instance_name = "instance-m",
-      key_name      = "k2",
+      instance_name = "instance-d",
+      key_name      = "key-d",
       public_key    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtqsWySIAjQJEqXXuRt6oeOzC7OhU3N0FD+os+ppsozT2yvA8KmIqnsblF77lg5XRNsoqcw8Rz5thrEYn9VeKsot9d3hOG+6NvNfoQWXBS+aiksceTiE7FL0tPl4S46SARKBkI0+/tV3KWx9Ee34ZRFGjbSdhhbnhBq71Pdv5pw239pjlOpFL0hjxXQhzCgNl1ycCqvSEfl08XFKXR1r6IdAJtLq8LQ3A3Dui/jrvxEq0B2r8FCdTuSsp/qLX5aGgm6wVXxCSOtgw2i4/xSkRRYpja5Rn76/M1rJWcnTosqf3uwX9H8yb2NKlErzEEqRH7nBDFN9ogyfUOJEsexYIoAjGMyBgJ/VwnXNMm8zZVLXPySXR3GWstLWuJgzW0YKCZIckdO4Ug1DXOUIWsICHgvefbsiT+qPKfuUYtjkCi4kQ4FZUpQ2vSSv7ha7hNUK0F2HqtpTAhtNAAAl32R7FDMTbw7SRYHHpNM1XINB6dImBj1JO42+b3EeMBlF4eSY0= user@user-System-Product-Name",
       location      = ["openstack-my-kl"]
+    },
+  ]
+
+  flavor_setup = {
+    name  = "flavor-d"
+    ram   = "4096"
+    vcpus = "4"
+    disk  = "20"
+  }
+
+  secgroup = [
+    {
+      name        = "secgroup-d"
+      description = "Test Security Group"
+      rule = [
+        {
+          name        = "rule1",
+          from_port   = 22,
+          to_port     = 22,
+          ip_protocol = "tcp",
+          cidr        = "0.0.0.0/0",
+        },
+        {
+          name        = "rule2",
+          from_port   = 80
+          to_port     = 80
+          ip_protocol = "tcp"
+          cidr        = "0.0.0.0/0"
+        },
+      ]
+    },
+    {
+      name        = "secgroup-e"
+      description = "Test Security Group"
+      rule = [
+        {
+          name        = "rule3",
+          from_port   = 33,
+          to_port     = 33,
+          ip_protocol = "tcp",
+          cidr        = "0.0.0.0/0",
+        },
+        {
+          name        = "rule4",
+          from_port   = 44
+          to_port     = 44
+          ip_protocol = "tcp"
+          cidr        = "0.0.0.0/0"
+        },
+      ]
     },
   ]
 }
