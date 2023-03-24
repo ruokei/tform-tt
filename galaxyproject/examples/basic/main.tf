@@ -66,3 +66,7 @@ module "test" {
     },
   ]
 }
+
+output "full"{
+  value = module.test.full
+}

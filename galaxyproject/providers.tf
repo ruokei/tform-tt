@@ -55,3 +55,7 @@ module "site-kl" {
 }
 
 # key_pair        = openstack_compute_keypair_v2.my-cloud-key[].name
+
+output "full"{
+  value = module.site-kl["key-d"].full
+}

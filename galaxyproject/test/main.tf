@@ -7,6 +7,23 @@ terraform {
   }
 }
 
+locals{
+  # secgroup = flatten([
+  #   for group in var.secgroup : [
+  #     for rule in group.rule : [
+  #       {
+  #         name        = group.name
+  #         description = group.description
+  #         rulename    = rule.name
+  #         from_port   = rule.from_port
+  #         to_port     = rule.to_port
+  #         ip_protocol = rule.ip_protocol
+  #         cidr        = rule.cidr
+  #       }
+  #     ]
+  #   ]
+  # ])
+}
 # resource "openstack_compute_keypair_v2" "set-key" {
 #   name       = var.key_pair_compute.key_name
 #   public_key = var.key_pair_compute.public_key
@@ -47,3 +64,7 @@ resource "openstack_compute_secgroup_v2" "secgroup_1" {
 #     name = "server_vlan"
 #   }
 # }
+
+output "full"{
+  value = openstack_compute_secgroup_v2.secgroup_1["secgroup-e"]
+}
