@@ -32,3 +32,17 @@ variable "secgroup" {
     }))
   }))
 }
+
+variable "network" {
+  description = "List of Networks"
+  type        = list(string)
+}
+
+variable "volume" {
+  description = "Volume Settings"
+  type = object({
+    name        = string
+    description = string
+    size        = number
+  })
+}

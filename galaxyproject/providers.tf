@@ -37,7 +37,10 @@ module "site-ttdi" {
   }
 
   key_pair_compute = each.value
-  secgroup = var.secgroup
+  secgroup         = var.secgroup
+  network          = var.network
+  flavor_setup     = var.flavor_setup
+  volume           = var.volume
 }
 
 module "site-kl" {
@@ -51,11 +54,15 @@ module "site-kl" {
   }
 
   key_pair_compute = each.value
-  secgroup = var.secgroup
+  secgroup         = var.secgroup
+  network          = var.network
+  flavor_setup     = var.flavor_setup
+  volume           = var.volume
 }
 
 # key_pair        = openstack_compute_keypair_v2.my-cloud-key[].name
 
-output "full"{
-  value = module.site-kl["key-d"].full
+output "full" {
+  # value = module.site-kl["key-d"].full
+  value = merge(module.site-kl["key-d"].full, module.site-ttdi["key-d"].full)
 }

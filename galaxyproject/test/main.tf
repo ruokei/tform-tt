@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-locals{
+locals {
   # secgroup = flatten([
   #   for group in var.secgroup : [
   #     for rule in group.rule : [
@@ -24,20 +24,20 @@ locals{
   #   ]
   # ])
 }
-# resource "openstack_compute_keypair_v2" "set-key" {
-#   name       = var.key_pair_compute.key_name
-#   public_key = var.key_pair_compute.public_key
-# }
+resource "openstack_compute_keypair_v2" "set-key" {
+  name       = var.key_pair_compute.key_name
+  public_key = var.key_pair_compute.public_key
+}
 
-# resource "openstack_compute_flavor_v2" "set-flavor" {
-#   name  = var.flavor_setup.name
-#   ram   = var.flavor_setup.ram
-#   vcpus = var.flavor_setup.vcpus
-#   disk  = var.flavor_setup.disk
-# }
+resource "openstack_compute_flavor_v2" "set-flavor" {
+  name  = var.flavor_setup.name
+  ram   = var.flavor_setup.ram
+  vcpus = var.flavor_setup.vcpus
+  disk  = var.flavor_setup.disk
+}
 
 resource "openstack_compute_secgroup_v2" "secgroup_1" {
-  for_each    = { for v in var.secgroup: v.name=>v }
+  for_each    = { for v in var.secgroup : v.name => v }
   name        = each.value.name
   description = each.value.description
 
@@ -53,18 +53,30 @@ resource "openstack_compute_secgroup_v2" "secgroup_1" {
   }
 }
 
-# resource "openstack_compute_instance_v2" "my-instance" {
-#   name            = var.key_pair_compute.instance_name
-#   image_name      = "CentOS-7-x86_64-GenericCloud-2111"
-#   flavor_name     = openstack_compute_flavor_v2.set_flavor.name
-#   key_pair        = var.key_pair_compute.key_name
-#   security_groups = ["default"]
+resource "openstack_blockstorage_volume_v3" "volume_1" {
+  name        = var.volume.name
+  description = var.volume.description
+  size        = var.volume.size
+}
 
-#   network {
-#     name = "server_vlan"
-#   }
-# }
+resource "openstack_compute_instance_v2" "instance_1" {
+  name            = var.key_pair_compute.instance_name
+  image_name      = "CentOS-7-x86_64-GenericCloud-2111"
+  flavor_name     = openstack_compute_flavor_v2.set-flavor.name
+  key_pair        = var.key_pair_compute.key_name
+  security_groups = [for v in var.secgroup : v.name]
 
-output "full"{
-  value = openstack_compute_secgroup_v2.secgroup_1["secgroup-e"]
+  dynamic "network" {
+    for_each = var.network
+
+    content {
+      name = network.value
+    }
+  }
+}
+
+output "full" {
+  value = openstack_compute_secgroup_v2.secgroup_1
+  # value = openstack_compute_instance_v2.instance_1
+
 }
