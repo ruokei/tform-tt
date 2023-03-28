@@ -12,15 +12,16 @@ module "test" {
       instance_name = "instance-d",
       key_name      = "key-d",
       public_key    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtqsWySIAjQJEqXXuRt6oeOzC7OhU3N0FD+os+ppsozT2yvA8KmIqnsblF77lg5XRNsoqcw8Rz5thrEYn9VeKsot9d3hOG+6NvNfoQWXBS+aiksceTiE7FL0tPl4S46SARKBkI0+/tV3KWx9Ee34ZRFGjbSdhhbnhBq71Pdv5pw239pjlOpFL0hjxXQhzCgNl1ycCqvSEfl08XFKXR1r6IdAJtLq8LQ3A3Dui/jrvxEq0B2r8FCdTuSsp/qLX5aGgm6wVXxCSOtgw2i4/xSkRRYpja5Rn76/M1rJWcnTosqf3uwX9H8yb2NKlErzEEqRH7nBDFN9ogyfUOJEsexYIoAjGMyBgJ/VwnXNMm8zZVLXPySXR3GWstLWuJgzW0YKCZIckdO4Ug1DXOUIWsICHgvefbsiT+qPKfuUYtjkCi4kQ4FZUpQ2vSSv7ha7hNUK0F2HqtpTAhtNAAAl32R7FDMTbw7SRYHHpNM1XINB6dImBj1JO42+b3EeMBlF4eSY0= user@user-System-Product-Name",
-      location      = ["openstack-my-kl","openstack-my-ttdi"]
+      # location      = ["openstack-my-kl", "openstack-my-ttdi"]
+      location      = ["openstack-my-kl"]
     },
   ]
 
   flavor_setup = {
     name  = "flavor-d"
-    ram   = "4096"
-    vcpus = "4"
-    disk  = "20"
+    ram   = 4096
+    vcpus = 4
+    disk  = 20
   }
 
   secgroup = [
@@ -66,15 +67,44 @@ module "test" {
     },
   ]
 
-  network = ["vpn_vlan","server_vlan"]
+  network = ["vpn_vlan", "server_vlan"]
 
   volume = {
     name        = "instance_volume_1"
     description = "Instance Volume #1"
     size        = 1
   }
+
+  servergroup = [
+    {
+      "name" : "sv-group-1",
+      "groups" : {
+        "variables" : [
+          {
+            "policy" : "anti-affinity",
+            "max_server_per_host" : 2,
+          },
+          # {
+          #   "policy" : "anti-affinity",
+          #   "max_server_per_host" : 1
+          # },
+        ]
+      }
+    },
+    {
+      "name" : "sv-group-2",
+      "groups" : {
+        "variables" : [
+          {
+            "policy" : "soft-affinity",
+            "max_server_per_host" : 2,
+          }
+        ]
+      }
+    },
+  ]
 }
 
-output "full"{
+output "full" {
   value = module.test.full
 }

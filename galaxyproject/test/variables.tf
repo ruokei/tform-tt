@@ -12,9 +12,9 @@ variable "flavor_setup" {
   description = "Flavor Settings"
   type = object({
     name  = string
-    ram   = string
-    vcpus = string
-    disk  = string
+    ram   = number
+    vcpus = number
+    disk  = number
   })
 }
 
@@ -45,4 +45,18 @@ variable "volume" {
     description = string
     size        = number
   })
+}
+
+variable "servergroup" {
+  type = list(object({
+    name = string
+    groups = object({
+      variables = list(
+        object({
+          policy = string
+          max_server_per_host = optional(number)
+        })
+      )
+    })
+  }))
 }
