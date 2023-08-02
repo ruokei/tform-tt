@@ -6,13 +6,6 @@ terraform {
       configuration_aliases = [openstack.openstack-my-kl, openstack.openstack-my-ttdi]
     }
   }
-  backend "remote" {
-    hostname     = "terrakube-ui:3000"
-    organization = "simple"
-    workspaces {
-      name = "testtest"
-    }
-  }
 }
 
 provider "openstack" {
