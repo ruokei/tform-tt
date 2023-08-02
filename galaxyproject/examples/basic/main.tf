@@ -67,7 +67,7 @@ module "test" {
     },
   ]
 
-  network = ["vpn_vlan", "server_vlan"]
+  network = ["server_vlan"]
 
   volume = {
     name        = "instance_volume_1"

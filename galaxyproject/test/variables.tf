@@ -53,7 +53,7 @@ variable "servergroup" {
     groups = object({
       variables = list(
         object({
-          policy = string
+          policy              = string
           max_server_per_host = optional(number)
         })
       )
